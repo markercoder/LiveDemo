@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         // 设置监听
         viewModel!!.data!!.observe(this, Observer {
             Log.d("MainActivity","$it")
-            it?.userName?.let { it1 -> tv_demo.text = it1 }
+            it?.userName?.let { it1 -> LiveDataBus.get().with("key").setValue(it1); }
         })
 
         // 设置点击事件
@@ -30,6 +30,10 @@ class MainActivity : AppCompatActivity() {
             index++
             viewModel?.getUser("$index")
         }
+
+        LiveDataBus.get().with("key",String::class.java).observe(this, Observer {
+            it?.let { it1 -> tv_demo.text = it1 }
+        })
     }
 
 }
